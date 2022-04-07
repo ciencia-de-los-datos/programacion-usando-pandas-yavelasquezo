@@ -24,8 +24,9 @@ def pregunta_01():
     """
     #CANTIDAD DE FILAS Y COLUMNAS
     x=tbl0.shape
+    l=x[0]
 
-    return x
+    return l
 
 
 def pregunta_02():
@@ -38,8 +39,9 @@ def pregunta_02():
     """
      #CANTIDAD DE FILAS Y COLUMNAS
     x=tbl0.shape
+    m=x[1]
     
-    return
+    return m
 
 
 def pregunta_03():
@@ -56,7 +58,8 @@ def pregunta_03():
     Name: _c1, dtype: int64
 
     """
-    return
+    tb=tbl0['_c1'].value_counts()
+    return tb
 
 
 def pregunta_04():
@@ -71,7 +74,9 @@ def pregunta_04():
     E    4.785714
     Name: _c2, dtype: float64
     """
-    return
+    tx=tbl0.groupby('_c1')['_c2'].mean()
+
+    return tx
 
 
 def pregunta_05():
@@ -88,7 +93,8 @@ def pregunta_05():
     E    9
     Name: _c2, dtype: int64
     """
-    return
+    f=tbl0.groupby('_c1')['_c2'].max()
+    return f
 
 
 def pregunta_06():
@@ -100,7 +106,10 @@ def pregunta_06():
     ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
     """
-    return
+    x=list(tbl1['_c4'].unique())
+    x.sort(reverse=False)
+    [x.upper() for x in x]
+    return x
 
 
 def pregunta_07():
@@ -116,7 +125,9 @@ def pregunta_07():
     E    67
     Name: _c2, dtype: int64
     """
-    return
+    g=tbl0.groupby('_c1')['_c2'].sum()
+
+    return g
 
 
 def pregunta_08():
@@ -134,7 +145,9 @@ def pregunta_08():
     39   39   E    5  1998-01-26    44
 
     """
-    return
+    tnew=tbl0.copy()
+    tnew['Suma']=tnew['_c0']+tnew['_c2']
+    return tnew
 
 
 def pregunta_09():
@@ -152,7 +165,17 @@ def pregunta_09():
     39   39   E    5  1998-01-26  1998
 
     """
-    return
+    tb4=tbl0.copy()
+    #creo una lista de la fila c3
+    tabla2=list(tb4['_c3'])
+    #quito mis guines
+    tabla2=[z.split("-") for z in tabla2]
+    x=[]
+    for i in tabla2:
+        x.append(i[0])
+    tb4['year'] =x
+    
+    return tb4
 
 
 def pregunta_10():
@@ -169,7 +192,15 @@ def pregunta_10():
     3   D                  1:2:3:5:5:7
     4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
-    return
+    l=tbl0.copy()
+    l['_c22']=l['_c2'].apply(lambda x: str(x))
+    def cadena(df):
+        lista1=list(df['_c22'])
+        lista1.sort()
+        return ':'.join(lista1)
+    x=l.groupby('_c1').apply(cadena)
+    
+    return x
 
 
 def pregunta_11():
@@ -188,7 +219,15 @@ def pregunta_11():
     38   38      d,e
     39   39    a,d,f
     """
-    return
+    s=tbl1.copy()
+    s['_c44']=s['_c4'].apply(lambda y: str(y))
+    def numeros(sf):
+        lista2=list(sf['_c44'])
+        lista2.sort()
+        return ','.join(lista2)
+    s1=s.groupby('_c0').apply(numeros)
+    
+    return s1
 
 
 def pregunta_12():
@@ -206,7 +245,11 @@ def pregunta_12():
     38   38                    eee:0,fff:9,iii:2
     39   39                    ggg:3,hhh:8,jjj:5
     """
-    return
+    tablafinal=tbl2.copy()
+    tablafinal['union']=tablafinal['_c5a'].map(str)+ ":"+tablafinal['_c5b'].map(str)
+    xxx=tablafinal.groupby('_c0')['union'].apply(','.join)
+
+    return xxx
 
 
 def pregunta_13():
@@ -223,4 +266,14 @@ def pregunta_13():
     E    275
     Name: _c5b, dtype: int64
     """
-    return
+    x=tbl0.copy()
+    #primero hago la suma de la columna c5b para tabla 2 en cada c0
+
+    tabla2=list(tbl2.groupby('_c0')['_c5b'].sum())
+    #uno la tabla de las sumas + la tabla 0 
+
+    x['Suma']=tabla2
+
+    #ahora hago grupy por la letra
+    res=x.groupby('_c1')['Suma'].sum()
+    return res
