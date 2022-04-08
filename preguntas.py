@@ -147,7 +147,7 @@ def pregunta_08():
 
     """
     tnew=tbl0.copy()
-    tnew['Suma']=tnew['_c0']+tnew['_c2']
+    tnew['suma']=tnew['_c0']+tnew['_c2']
     return tnew
 
 
