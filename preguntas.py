@@ -225,15 +225,22 @@ def pregunta_11():
     38   38      d,e
     39   39    a,d,f
     """
+    
     s=tbl1.copy()
     s['_c44']=s['_c4'].apply(lambda y: str(y))
     def numeros(sf):
         lista2=list(sf['_c44'])
         lista2.sort()
         return ','.join(lista2)
-    s1=s.groupby('_c0').apply(numeros)
-    
-    return s1
+    y=s.groupby('_c0').apply(numeros)
+    #creo una lista de los numeros
+    df_new = s.drop_duplicates(subset = "_c0")
+    p=list(sorted(df_new['_c0']))
+    #creo una lista de x 
+    f=list(y)
+    #ahora creo una tabla con estas columnas
+    df = pd.DataFrame(list(zip(p,f)), columns = ['_c0','_c4'])
+    return df
 
 
 def pregunta_12():
