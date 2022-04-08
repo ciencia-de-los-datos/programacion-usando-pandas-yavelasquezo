@@ -108,10 +108,14 @@ def pregunta_06():
     ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
     """
-    x=list(tbl1['_c4'].unique())
-    x.sort(reverse=False)
-    [x.upper() for x in x]
-    return x
+    bb=tbl1.copy('_c4')
+    df_new = bb.drop_duplicates(subset = "_c4")
+    l=[]
+    x=list(sorted(df_new['_c4']))
+    for i in x:
+        l.append(i.upper())
+    return l
+
 
 
 def pregunta_07():
