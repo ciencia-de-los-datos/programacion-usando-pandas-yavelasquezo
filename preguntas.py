@@ -251,11 +251,18 @@ def pregunta_12():
     38   38                    eee:0,fff:9,iii:2
     39   39                    ggg:3,hhh:8,jjj:5
     """
+    #genero la lista separada por coma y dos puntos de cada numero    
     tablafinal=tbl2.copy()
-    tablafinal['union']=tablafinal['_c5a'].map(str)+ ":"+tablafinal['_c5b'].map(str)
-    xxx=tablafinal.groupby('_c0')['union'].apply(','.join)
-
-    return xxx
+    tablafinal['union']= tablafinal['_c5a'].map(str)+ ":"+tablafinal['_c5b'].map(str)
+    x=tablafinal.groupby('_c0')['union'].apply(','.join)
+    #creo una lista de los numeros
+    df_new = tablafinal.drop_duplicates(subset = "_c0")
+    p=list(sorted(df_new['_c0']))
+    #creo una lista de x 
+    f=list(x)
+    #ahora creo una tabla con estas columnas
+    df = pd.DataFrame(list(zip(p,f)), columns = ['_c0','_c5'])
+    return df
 
 
 def pregunta_13():
