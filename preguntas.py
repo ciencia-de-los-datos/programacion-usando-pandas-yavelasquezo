@@ -205,8 +205,13 @@ def pregunta_10():
         lista1.sort()
         return ':'.join(lista1)
     x=l.groupby('_c1').apply(cadena)
-    
-    return x
+    df_new = l.drop_duplicates(subset = "_c1")
+    p=list(sorted(df_new['_c1']))
+    #creo una lista de x 
+    f=list(x)
+    #ahora creo una tabla con estas columnas
+    df = pd.DataFrame(list(zip(p,f)), columns = ['_c0','_c2']) 
+    return df
 
 
 def pregunta_11():
