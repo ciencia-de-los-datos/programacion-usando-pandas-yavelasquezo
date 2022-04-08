@@ -48,6 +48,7 @@ def pregunta_03():
     """
     ¿Cuál es la cantidad de registros por cada letra de la columna _c1 del archivo
     `tbl0.tsv`?
+    Me falta orden alfabetico 
 
     Rta/
     A     8
