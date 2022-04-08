@@ -265,15 +265,19 @@ def pregunta_12():
     """
     #genero la lista separada por coma y dos puntos de cada numero    
     tablafinal=tbl2.copy()
-    tablafinal['union']= tablafinal['_c5a'].map(str)+ ":"+tablafinal['_c5b'].map(str)
-    x=tablafinal.groupby('_c0')['union'].apply(','.join)
+    x=tablafinal.set_index( ['_c0','_c5a']).sort_index(ascending=True)
+    y=x.copy()
+    p=y.reset_index() 
+    p['union']= p['_c5a'].map(str)+ ":"+p['_c5b'].map(str)
+    x=p.groupby('_c0')['union'].apply(','.join)
     #creo una lista de los numeros
-    df_new = tablafinal.drop_duplicates(subset = "_c0")
-    p=list(sorted(df_new['_c0']))
+    df_new = p.drop_duplicates(subset = "_c0")
+    z=list(sorted(df_new['_c0']))
     #creo una lista de x 
     f=list(x)
     #ahora creo una tabla con estas columnas
-    df = pd.DataFrame(list(zip(p,f)), columns = ['_c0','_c5'])
+    df = pd.DataFrame(list(zip(z,f)), columns = ['_c0','_c5'])
+
     return df
 
 
