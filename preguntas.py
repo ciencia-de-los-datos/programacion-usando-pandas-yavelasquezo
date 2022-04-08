@@ -210,7 +210,7 @@ def pregunta_10():
     #creo una lista de x 
     f=list(x)
     #ahora creo una tabla con estas columnas
-    df = pd.DataFrame(list(zip(p,f)), columns = ['_c0','_c2']) 
+    df = pd.DataFrame(list(zip(p,f)), columns = ['_c1','_c2']) 
     return df
 
 
