@@ -59,8 +59,9 @@ def pregunta_03():
     Name: _c1, dtype: int64
 
     """
-    tb=tbl0['_c1'].value_counts()
-    return tb
+    tb=tbl0.copy()
+    x=tb['_c1'].value_counts().sort_index(ascending=True)
+    return x
 
 
 def pregunta_04():
