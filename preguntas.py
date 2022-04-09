@@ -186,19 +186,25 @@ def pregunta_09():
 
 def pregunta_10():
     l=tbl0.copy()
+    
     l['_c22']=l['_c2'].apply(lambda x: str(x))
+    #creo la cadena de numeros ordenados 
     def cadena(df):
         lista1=list(df['_c22'])
         lista1.sort()
         return ':'.join(lista1)
+    #creo el grupy por las claves llamando la cadena de numeros ordenados, entonces me agrupa en orden los numeros y me los separa 
     y=l.groupby('_c1').apply(cadena)
+    #mi lista de claves de la columba c1
     df_new = l.drop_duplicates(subset = "_c1")
     p=list(sorted(df_new['_c1']))
-    #creo una lista de x 
+    #creo una lista de y es decir de los numeros ya separados por :
     f=list(y)
     #ahora creo una tabla con estas columnas
     df = pd.DataFrame(list(zip(p,f)), columns = ['_c1','_c2'])
-    return df
+    z= df.set_index( '_c1').sort_index(ascending=True)
+    
+    return z
     """
     Construya una tabla que contenga _c1 y una lista separada por ':' de los valores de
     la columna _c2 para el archivo `tbl0.tsv`.
