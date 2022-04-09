@@ -8,7 +8,7 @@ Utilice los archivos `tbl0.tsv`, `tbl1.tsv` y `tbl2.tsv`, para resolver las preg
 
 """
 import pandas as pd
-
+import numpy as np
 tbl0 = pd.read_csv("tbl0.tsv", sep="\t")
 tbl1 = pd.read_csv("tbl1.tsv", sep="\t")
 tbl2 = pd.read_csv("tbl2.tsv", sep="\t")
@@ -22,7 +22,11 @@ def pregunta_01():
     40
 
     """
-    return
+    #CANTIDAD DE FILAS Y COLUMNAS
+    x=tbl0.shape
+    l=x[0]
+
+    return l
 
 
 def pregunta_02():
@@ -33,13 +37,18 @@ def pregunta_02():
     4
 
     """
-    return
+     #CANTIDAD DE FILAS Y COLUMNAS
+    x=tbl0.shape
+    m=x[1]
+    
+    return m
 
 
 def pregunta_03():
     """
     ¿Cuál es la cantidad de registros por cada letra de la columna _c1 del archivo
     `tbl0.tsv`?
+    Me falta orden alfabetico 
 
     Rta/
     A     8
@@ -50,7 +59,9 @@ def pregunta_03():
     Name: _c1, dtype: int64
 
     """
-    return
+    tb=tbl0.copy()
+    x=tb['_c1'].value_counts().sort_index(ascending=True)
+    return x
 
 
 def pregunta_04():
@@ -65,7 +76,9 @@ def pregunta_04():
     E    4.785714
     Name: _c2, dtype: float64
     """
-    return
+    tx=tbl0.groupby('_c1')['_c2'].mean()
+
+    return tx
 
 
 def pregunta_05():
@@ -82,7 +95,8 @@ def pregunta_05():
     E    9
     Name: _c2, dtype: int64
     """
-    return
+    f=tbl0.groupby('_c1')['_c2'].max()
+    return f
 
 
 def pregunta_06():
@@ -94,7 +108,14 @@ def pregunta_06():
     ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
     """
-    return
+    bb=tbl1.copy('_c4')
+    df_new = bb.drop_duplicates(subset = "_c4")
+    l=[]
+    x=list(sorted(df_new['_c4']))
+    for i in x:
+        l.append(i.upper())
+    return l
+
 
 
 def pregunta_07():
@@ -110,7 +131,9 @@ def pregunta_07():
     E    67
     Name: _c2, dtype: int64
     """
-    return
+    g=tbl0.groupby('_c1')['_c2'].sum()
+
+    return g
 
 
 def pregunta_08():
@@ -128,7 +151,9 @@ def pregunta_08():
     39   39   E    5  1998-01-26    44
 
     """
-    return
+    tnew=tbl0.copy()
+    tnew['suma']=tnew['_c0']+tnew['_c2']
+    return tnew
 
 
 def pregunta_09():
@@ -146,10 +171,40 @@ def pregunta_09():
     39   39   E    5  1998-01-26  1998
 
     """
-    return
+    tb4=tbl0.copy()
+    #creo una lista de la fila c3
+    tabla2=list(tb4['_c3'])
+    #quito mis guines
+    tabla2=[z.split("-") for z in tabla2]
+    x=[]
+    for i in tabla2:
+        x.append(i[0])
+    tb4['year'] =x
+    
+    return tb4
 
 
 def pregunta_10():
+    l=tbl0.copy()
+    
+    l['_c22']=l['_c2'].apply(lambda x: str(x))
+    #creo la cadena de numeros ordenados 
+    def cadena(df):
+        lista1=list(df['_c22'])
+        lista1.sort()
+        return ':'.join(lista1)
+    #creo el grupy por las claves llamando la cadena de numeros ordenados, entonces me agrupa en orden los numeros y me los separa 
+    y=l.groupby('_c1').apply(cadena)
+    #mi lista de claves de la columba c1
+    df_new = l.drop_duplicates(subset = "_c1")
+    p=list(sorted(df_new['_c1']))
+    #creo una lista de y es decir de los numeros ya separados por :
+    f=list(y)
+    #ahora creo una tabla con estas columnas
+    df = pd.DataFrame(list(zip(p,f)), columns = ['_c1','_c2'])
+    z= df.set_index( '_c1').sort_index(ascending=True)
+    
+    return z
     """
     Construya una tabla que contenga _c1 y una lista separada por ':' de los valores de
     la columna _c2 para el archivo `tbl0.tsv`.
@@ -163,7 +218,7 @@ def pregunta_10():
     3   D                  1:2:3:5:5:7
     4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
-    return
+    
 
 
 def pregunta_11():
@@ -182,7 +237,22 @@ def pregunta_11():
     38   38      d,e
     39   39    a,d,f
     """
-    return
+    
+    s=tbl1.copy()
+    s['_c44']=s['_c4'].apply(lambda y: str(y))
+    def numeros(sf):
+        lista2=list(sf['_c44'])
+        lista2.sort()
+        return ','.join(lista2)
+    y=s.groupby('_c0').apply(numeros)
+    #creo una lista de los numeros
+    df_new = s.drop_duplicates(subset = "_c0")
+    p=list(sorted(df_new['_c0']))
+    #creo una lista de x 
+    f=list(y)
+    #ahora creo una tabla con estas columnas
+    df = pd.DataFrame(list(zip(p,f)), columns = ['_c0','_c4'])
+    return df
 
 
 def pregunta_12():
@@ -200,7 +270,22 @@ def pregunta_12():
     38   38                    eee:0,fff:9,iii:2
     39   39                    ggg:3,hhh:8,jjj:5
     """
-    return
+    #genero la lista separada por coma y dos puntos de cada numero    
+    tablafinal=tbl2.copy()
+    x=tablafinal.set_index( ['_c0','_c5a']).sort_index(ascending=True)
+    y=x.copy()
+    p=y.reset_index() 
+    p['union']= p['_c5a'].map(str)+ ":"+p['_c5b'].map(str)
+    x=p.groupby('_c0')['union'].apply(','.join)
+    #creo una lista de los numeros
+    df_new = p.drop_duplicates(subset = "_c0")
+    z=list(sorted(df_new['_c0']))
+    #creo una lista de x 
+    f=list(x)
+    #ahora creo una tabla con estas columnas
+    df = pd.DataFrame(list(zip(z,f)), columns = ['_c0','_c5'])
+
+    return df
 
 
 def pregunta_13():
@@ -217,4 +302,14 @@ def pregunta_13():
     E    275
     Name: _c5b, dtype: int64
     """
-    return
+    x=tbl0.copy()
+    #primero hago la suma de la columna c5b para tabla 2 en cada c0
+
+    tabla2=list(tbl2.groupby('_c0')['_c5b'].sum())
+    #uno la tabla de las sumas + la tabla 0 
+
+    x['Suma']=tabla2
+
+    #ahora hago grupy por la letra
+    res=x.groupby('_c1')['Suma'].sum()
+    return res
